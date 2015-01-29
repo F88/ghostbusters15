@@ -1,0 +1,28 @@
+- name: setup directory for logging
+  file: path={{ remote_log_dir }} state=directory mode=0777
+  sudo: yes
+
+- name: Update packages
+  script: update-packages.sh
+  sudo: yes
+  register: result
+  ignore_errors: yes
+
+- debug: var=result
+#  when: result.rc != 0
+
+- name: rename log files
+  shell: "mv -v {{ item }} {{ item }}.{{ ansible_date_time.iso8601 }}"
+  with_items: "{{ log_files }}"
+
+- name: fetch log files
+  fetch:
+    src: "{{ item }}.{{ ansible_date_time.iso8601 }}"
+    dest: "{{ local_log_dir }}/"
+    validate_checksum: yes
+    fail_on_missing: yes
+    flat: no
+  with_items: "{{ log_files }}"
+
+- assert: { that: "result.rc = 0" }
+

@@ -1,0 +1,4 @@
+- include: check-installed-packages.yml
+  tags: [check]
+  when: ansible_pkg_mgr == "yum"
+

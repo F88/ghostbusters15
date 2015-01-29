@@ -1,0 +1,19 @@
+- name: "GHOST Busters 2015"
+  hosts: haunted-mansions
+  sudo: no
+  vars:
+    - local_home: "{{ lookup('env','HOME') }}"
+    - local_log_dir: "{{ local_home }}/gb15-logs"
+    - remote_log_dir: "/var/log/ghostbusters15"
+  tasks:
+    - debug: var=local_home
+      tags: [check,update]
+    - debug: var=local_home
+      tags: [check,update]
+    - debug: var=inventory_hostname
+      tags: [check,update]
+  roles:
+    - seeker
+    - buster
+
+
