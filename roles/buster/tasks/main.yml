@@ -1,7 +1,4 @@
 - include: update-packages.yml
-  tags: [update]
+  tags: [buster]
   when: ansible_pkg_mgr == "yum"
-
-- include: reboot-os.yml
-  tags: [reboot]
 

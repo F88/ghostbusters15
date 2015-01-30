@@ -1,9 +1,19 @@
-[foo]
-foo
+[buster]
+localhost
 
-[bar]
-bar
-
-[target:children]
+[foobar]
 foo
 bar
+baz
+
+[hogex]
+hoge
+hoga
+
+[ghost-busters:children]
+buster
+
+[haunted-mansions:children]
+foobar
+hogex
+

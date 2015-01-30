@@ -5,15 +5,11 @@
     - local_home: "{{ lookup('env','HOME') }}"
     - local_log_dir: "{{ local_home }}/gb15-logs"
     - remote_log_dir: "/var/log/ghostbusters15"
-  tasks:
-    - debug: var=local_home
-      tags: [check,update]
-    - debug: var=local_home
-      tags: [check,update]
-    - debug: var=inventory_hostname
-      tags: [check,update]
+#  tasks:
+#    - debug: var=inventory_hostname
   roles:
-    - seeker
-    - buster
-
+    - { role: seeker , tags: [ 'seeker' ] }
+    - { role: buster , tags: [ 'buster' ] }
+    - { role: vacuumer , tags: [ vacuumer' ] }
+    - { role: seeker , tags: [ 'seeker' ] }
 

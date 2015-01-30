@@ -1,0 +1,2 @@
+- name: Reboot system
+  shell: shutdown -r now "Fix for CVE-2015-0235(GHOST)"

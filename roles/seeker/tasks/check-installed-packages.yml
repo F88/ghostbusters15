@@ -12,17 +12,23 @@
 #  when: result.rc != 0
 
 - name: rename log files
-  shell: "mv -v {{ item }} {{ item }}.{{ ansible_date_time.iso8601 }}"
+  shell: "mv -v {{ item }} {{ item }}.{{ ansible_hostname }}.{{ ansible_date_time.iso8601 }}"
   with_items: "{{ log_files }}"
+
+
+
+- name: setup directory to fetch logs
+  local_action: file path={{ local_log_dir }} state=directory
+  run_once: true
 
 - name: fetch log files
   fetch:
-    src: "{{ item }}.{{ ansible_date_time.iso8601 }}"
+    src: "{{ item }}.{{ ansible_hostname}}.{{ ansible_date_time.iso8601 }}"
     dest: "{{ local_log_dir }}/"
     validate_checksum: yes
     fail_on_missing: yes
     flat: no
   with_items: "{{ log_files }}"
 
-- assert: { that: "result.rc = 0" }
+- assert: { that: "result.rc == 0" }
 
