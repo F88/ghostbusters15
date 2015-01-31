@@ -8,8 +8,8 @@
 #  tasks:
 #    - debug: var=inventory_hostname
   roles:
-    - { role: seeker , tags: [ 'seeker' ] }
-    - { role: buster , tags: [ 'buster' ] }
-    - { role: vacuumer , tags: [ vacuumer' ] }
-    - { role: seeker , tags: [ 'seeker' ] }
+    - { role: seeker ,   tags: [ 'seeker' ] }
+    - { role: buster ,   tags: [ 'buster' ] }
+    - { role: vacuumer , tags: [ 'vacuumer' ] }
+    - { role: seeker ,   tags: [ 'seeker' ] }
 
