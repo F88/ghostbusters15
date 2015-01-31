@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -x
 set -e
 
 declare -r log_dir=/var/log/ghostbusters15
@@ -17,13 +16,34 @@ cat << __EOD__
 # --------------------
 __EOD__
 sudo yum -v clean all
-sudo yum -v check-update "${target_packages}"
+declare es=0
+sudo yum -v check-update "${target_package_name}" || es=$?
 
-# yum update
-cat << __EOD__
+case $es in
+
+  0 ) # latest packages installed
+    cat << __EOD__
+# --------------------
+# no packages available for an update
+# --------------------
+__EOD__
+    ;;
+
+  100 ) # packages available for an update
+    # yum update
+    cat << __EOD__
 # --------------------
 # yum update
 # --------------------
 __EOD__
-sudo yum --assumeyes update "${target_packages}"
+
+    sudo yum --assumeyes update "${target_package_name}"
+    es=$?
+    ;;
+
+  * ) exit $es ;;
+
+esac
+
+exit $es
 
