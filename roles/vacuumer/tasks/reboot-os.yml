@@ -1,2 +1,28 @@
 - name: Reboot system
-  shell: shutdown -r now "Fix for CVE-2015-0235(GHOST)"
+  command: shutdown -r now "Fix for CVE-2015-0235(GHOST)"
+  sudo: yes
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+- name: wait for the server to go down (reboot)
+  sudo: false
+  local_action: wait_for host={{ inventory_hostname }} port=22 state=stopped
+
+- name: wait for 300 seconds
+  pause: seconds={{ item }}
+  with_items: [ 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
+
+- name: waiting for server to come back
+  local_action:
+    module: wait_for
+    host: "{{ inventory_hostname }}"
+    port: 22
+    state: started
+    delay: 0
+    timeout: 180
+    connect_timeout: 120
+  sudo: false
+
+- debug: msg="{{ inventory_hostname }} rebooted ;)"
+
