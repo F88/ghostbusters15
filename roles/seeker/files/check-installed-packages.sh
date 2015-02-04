@@ -21,10 +21,10 @@ function query_packages {
 
   cat << __EOD__
 
-# --------------------"
-# ${#target_packages_a[*]} packages found"
-${target_packages}"
-# --------------------"
+# --------------------
+# ${#target_packages_a[*]} packages found
+${target_packages}
+# --------------------
 __EOD__
 
   for pkg in "${target_packages_a[@]}"; do

@@ -1,7 +1,12 @@
-- name: setup directory for logging
+- name: Setup directory for logging
   file: path={{ remote_log_dir }} state=directory mode=0777
   sudo: yes
   
+- name: Setup timestamp for filename
+#  local_action: shell date --utc --iso-8601=seconds 
+  local_action: shell date --iso-8601=seconds 
+  register: ts1
+
 - name: Check for installed packages 
   script: check-installed-packages.sh
   sudo: no
@@ -11,19 +16,19 @@
 - debug: var=result
 #  when: result.rc != 0
 
-- name: rename log files
-  shell: "mv -v {{ item }} {{ item }}.{{ ansible_hostname }}.{{ ansible_date_time.iso8601 }}"
+- name: Rename log files
+  shell: "mv -v {{ remote_log_dir }}/{{ item }} {{ remote_log_dir }}/{{ ansible_hostname }}.{{ ts1.stdout }}.{{ item }}"
   with_items: "{{ log_files }}"
 
 
 
-- name: setup directory to fetch logs
+- name: Setup directory to fetch logs
   local_action: file path={{ local_log_dir }} state=directory
   run_once: true
 
-- name: fetch log files
+- name: Fetch log files
   fetch:
-    src: "{{ item }}.{{ ansible_hostname}}.{{ ansible_date_time.iso8601 }}"
+    src: "{{ remote_log_dir }}/{{ ansible_hostname }}.{{ ts1.stdout }}.{{ item }}"
     dest: "{{ local_log_dir }}/"
     validate_checksum: yes
     fail_on_missing: yes
