@@ -37,7 +37,7 @@ __EOD__
 # --------------------
 __EOD__
 
-    sudo yum --assumeyes update "${target_package_name}"
+    sudo yum -y update "${target_package_name}"
     es=$?
     ;;
 
